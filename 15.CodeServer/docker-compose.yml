@@ -1,24 +1,20 @@
-version: "2"
-volumes:
-  nextcloud:
-  db:
+version: "2.1"
 services:
-  db:
-    image: mariadb
-    restart: always
-    volumes:
-      - db:/var/lib/mysql
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
     environment:
-      - MYSQL_ROOT_PASSWORD=N3xtCl0ud!
-      - MYSQL_PASSWORD=nextcloud
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-  app:
-    image: nextcloud
-    ports:
-      - 8080:80
-    links:
-      - db
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PASSWORD=ENTER_PASSWORD #optional
+      - HASHED_PASSWORD= #optional
+      - SUDO_PASSWORD=ENTER_PASSWORD #optional
+      - SUDO_PASSWORD_HASH= #optional
+      - PROXY_DOMAIN=HOSTNAME #optional
+      - DEFAULT_WORKSPACE=/config/workspace #optional
     volumes:
-      - nextcloud:/var/www/html
-    restart: always
+      - /srv/docker/appdata/vscode/config:/config
+    ports:
+      - 8443:8443
+    restart: unless-stopped

@@ -1,24 +1,17 @@
 version: "2"
-volumes:
-  nextcloud:
-  db:
 services:
-  db:
-    image: mariadb
-    restart: always
-    volumes:
-      - db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=N3xtCl0ud!
-      - MYSQL_PASSWORD=nextcloud
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-  app:
-    image: nextcloud
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
     ports:
-      - 8080:80
-    links:
-      - db
+      - 53:53/tcp
+      - 53:53/udp
+      - 784:784/udp
+      - 853:853/tcp
+      - 3000:3000/tcp
+      - 80:80/tcp
+      - 443:443/tcp
     volumes:
-      - nextcloud:/var/www/html
-    restart: always
+      - /srv/docker/appdata/adguard_home/workingdir:/opt/adguardhome/work
+      - /srv/docker/appdata/adguard_home/config:/opt/adguardhome/conf
+    restart: unless-stopped
