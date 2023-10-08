@@ -1,24 +1,16 @@
-version: "2"
-volumes:
-  nextcloud:
-  db:
+version: '3.8'
 services:
-  db:
-    image: mariadb
-    restart: always
-    volumes:
-      - db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=N3xtCl0ud!
-      - MYSQL_PASSWORD=nextcloud
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-  app:
-    image: nextcloud
+  mariadb:
+    image: linuxserver/mariadb:latest
     ports:
-      - 8080:80
-    links:
-      - db
+      - 3306:3306
+    environment:
+      PUID: '1000'
+      PGID: '1000'
+      MYSQL_ROOT_PASSWORD: 'ENTER_PASSWORD'
+      MYSQL_DATABASE: 'DATABASE'
+      MYSQL_USER: 'USER'
+      MYSQL_PASSWORD: 'ENTER_PASSWORD'
+      TZ: America/Los_Angeles
     volumes:
-      - nextcloud:/var/www/html
-    restart: always
+      - /srv/docker/appdata/mariadb:/var/lib/mysql

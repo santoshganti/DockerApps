@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    ports:
+      - 5050:80:tcp
+    environment:
+      PUID: '1000'
+      PGID: '1000'
+      PGADMIN_DEFAULT_EMAIL: ''
+      PGADMIN_DEFAULT_PASSWORD: ''
+      TZ: America/Los_Angeles
+    volumes:
+      - /srv/docker/appdata/pgadmin:/var/lib/pgadmin

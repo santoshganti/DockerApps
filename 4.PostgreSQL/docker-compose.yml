@@ -1,24 +1,27 @@
-version: "2"
-volumes:
-  nextcloud:
-  db:
+# PostgreSQL 15 is a powerful, open source object-relational database system. Uses official Postgres Docker image @ https://hub.docker.com/_/postgres/
+# Configuration
+#   /mnt/cache/appdata/postgresql15 This is where Postgres will store it's data. For best performance, keep the files on cache drive.
+#   Port 5432 Default connection port
+#   POSTGRES_PASSWORD Superuser password. REQUIRED TO SET, otherwise connecting outside container will not be possible.
+#   POSTGRES_USER Username for the superuser. Defaults to postgres if not set.
+#   POSTGRES_DB Used to define different name for default database. Defaults to user if not set.
+
+# Icon - https://github.com/juusujanar/unraid-templates/raw/master/img/PostgreSQL-logo.png
+
+version: "3.8"
 services:
-  db:
-    image: mariadb
+  postgresql:
+    image: postgres:latest
     restart: always
-    volumes:
-      - db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=N3xtCl0ud!
-      - MYSQL_PASSWORD=nextcloud
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-  app:
-    image: nextcloud
     ports:
-      - 8080:80
-    links:
-      - db
+      - 5432:5432
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      HOST_CONTAINERNAME: "postgresql15"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "ENTER_PASSWORD"
+      POSTGRES_DB: "postgres"
+      TZ: "America/Los_Angeles"
     volumes:
-      - nextcloud:/var/www/html
-    restart: always
+      - /srv/docker/appdata/postgresql15:/var/lib/postgresql/data

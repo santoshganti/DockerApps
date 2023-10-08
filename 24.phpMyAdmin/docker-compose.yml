@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  phpmyadmin:
+    image: linuxserver/phpmyadmin:latest
+    ports:
+      - 8081:80:tcp
+    environment:
+      PUID: '1000'
+      PGID: '1000'
+      TZ: America/Los_Angeles
+      PMA_ARBITRARY: '1'
+    volumes:
+      - /srv/docker/appdata/phpmyadmin/config:/config
